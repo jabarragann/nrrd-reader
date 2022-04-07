@@ -4,8 +4,8 @@
 int main(int argc, char **argv)
 {
     // reading a NRRD header without reading the image data:
-    std::string file = "./../sample_volumes/Segmentation144raw.nrrd";
-    // std::string file = "./../sample_volumes/Segmentation_LT_144.seg.nrrd";
+    // std::string file = "./../sample_volumes/Segmentation144raw.nrrd";
+    std::string file = "./../sample_volumes/Segmentation_LT_144.seg.nrrd";
     std::cout << "File: " << file << std::endl;
     std::cout << "Type: " << NRRD::getDataType(file) << std::endl;
 
