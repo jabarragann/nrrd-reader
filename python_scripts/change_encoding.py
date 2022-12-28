@@ -1,15 +1,33 @@
+#!/usr/bin/python3
+
 import numpy as np
 import nrrd
+import argparse
+from pathlib import Path
 
 
-# Read the data back from file
-filename = "Segmentation_LT_144.seg.nrrd"
-readdata, header = nrrd.read(filename)
+if __name__ == "__main__":
 
-header["encoding"] = "raw"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--infile", required=True, help="input file")
+    parser.add_argument("--out", required=True, help="output file")
+    parser.add_argument(
+        "--encoding", required=True, choices=["raw", "gzip"], help="encoding. [raw or gzip]"
+    )
+    args = parser.parse_args()
 
-print(readdata.shape)
-print(header["encoding"])
+    inputfile = Path(args.infile)
+    outputfile = Path(args.out)
+    encoding = args.encoding
 
-new_filename = "Segmentation144.raw.nrrd"
-nrrd.write(new_filename, readdata, header)
+    if not inputfile.exists():
+        raise ValueError("input file does not exist")
+
+    readdata, header = nrrd.read(inputfile)
+
+    print(f"data shape: {readdata.shape}")
+    print(f"current encoding {header['encoding']}")
+    print(f"future encoding {encoding}")
+
+    header["encoding"] = encoding
+    nrrd.write(str(outputfile), readdata, header)
